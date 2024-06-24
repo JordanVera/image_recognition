@@ -38,18 +38,17 @@ const ImageUpload = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ image: base64Image }),
+      body: JSON.stringify({ image: base64Image.split(',')[1] }), // Remove the data URL prefix
     });
 
     const data = await response.json();
-
     setCaption(data.caption);
   };
 
   const tensorToBase64 = async (tensor) => {
     const canvas = document.createElement('canvas');
     await tf.browser.toPixels(tensor.squeeze(), canvas);
-    return canvas.toDataURL();
+    return canvas.toDataURL('image/png');
   };
 
   return (
